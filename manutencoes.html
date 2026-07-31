@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Manutenções</title>
+</head>
+<body>
+
+<h2>Registrar Manutenção</h2>
+
+<form id="formManutencao">
+  <input type="number" id="equipamento_id" placeholder="ID do Equipamento" required><br><br>
+  <input type="text" id="descricao" placeholder="Descrição"><br><br>
+  <input type="text" id="tecnico" placeholder="Técnico"><br><br>
+  <input type="text" id="setor" placeholder="Setor"><br><br>
+  <input type="text" id="funcionario" placeholder="Funcionário"><br><br>
+  <input type="date" id="data"><br><br>
+  <input type="time" id="hora"><br><br>
+
+  <button type="submit">Salvar</button>
+</form>
+
+<hr>
+
+<h2>Lista de Manutenções</h2>
+<ul id="lista"></ul>
+
+<script>
+const form = document.getElementById('formManutencao');
+const lista = document.getElementById('lista');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const data = {
+    equipamento_id: document.getElementById('equipamento_id').value,
+    descricao: document.getElementById('descricao').value,
+    tecnico: document.getElementById('tecnico').value,
+    setor: document.getElementById('setor').value,
+    funcionario: document.getElementById('funcionario').value,
+    data_manutencao: document.getElementById('data').value,
+    hora_manutencao: document.getElementById('hora').value
+  };
+
+  await fetch('http://localhost:3000/manutencoes', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+
+  alert('Salvo!');
+  carregar();
+});
+
+async function carregar() {
+  const res = await fetch('http://localhost:3000/manutencoes');
+  const dados = await res.json();
+
+  lista.innerHTML = '';
+
+  dados.forEach(m => {
+    const li = document.createElement('li');
+    li.textContent = `
+      Equipamento: ${m.equipamento_nome} | 
+      ${m.descricao} | 
+      ${m.data_manutencao}
+    `;
+    lista.appendChild(li);
+  });
+}
+
+carregar();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,332 @@
+/* ==========================================
+   RESET E ESTILOS GERAIS
+   ========================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f7fafc;
+    color: #2d3748;
+    line-height: 1.5;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+/* CLASSE UTILITÁRIA DE EXCLUSÃO DE EXIBIÇÃO */
+.hidden {
+    display: none !important;
+}
+
+/* ==========================================
+   NAVBAR
+   ========================================== */
+.navbar {
+    background-color: #2b6cb0;
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.btn-logout {
+    background: #e53e3e;
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.btn-logout:hover {
+    background: #c53030;
+}
+
+/* ==========================================
+   ABAS DE NAVEGAÇÃO
+   ========================================== */
+.tabs-nav {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 10px;
+}
+
+.tab-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 15px;
+    background: #edf2f7;
+    color: #4a5568;
+    transition: all 0.2s;
+}
+
+.tab-btn:hover {
+    background: #e2e8f0;
+}
+
+.tab-btn.active {
+    background: #2b6cb0;
+    color: white;
+}
+
+/* ==========================================
+   FORMULÁRIOS E INPUTS
+   ========================================== */
+.card-form {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    border: 1px solid #e2e8f0;
+    margin-bottom: 25px;
+}
+
+.card-form h3 {
+    margin-bottom: 15px;
+    color: #2d3748;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+}
+
+.form-grid input, 
+.form-grid select, 
+textarea {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+}
+
+.form-grid input:focus, 
+.form-grid select:focus, 
+textarea:focus {
+    border-color: #3182ce;
+    box-shadow: 0 0 0 2px rgba(49, 130, 206, 0.2);
+}
+
+.btn-primary {
+    background: #319795;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.btn-primary:hover {
+    background: #2c7a7b;
+}
+
+/* ==========================================
+   FILTROS DE CATEGORIA
+   ========================================== */
+.filtros-categoria {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.categoria-btn {
+    padding: 6px 14px;
+    border: 1px solid #cbd5e0;
+    background: white;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.2s;
+}
+
+.categoria-btn:hover {
+    background: #f7fafc;
+}
+
+.categoria-btn.active {
+    background: #2b6cb0;
+    color: white;
+    border-color: #2b6cb0;
+}
+
+/* ==========================================
+   CARDS DE EQUIPAMENTOS
+   ========================================== */
+.secao-status {
+    margin-top: 25px;
+}
+
+.secao-status h3 {
+    margin-bottom: 12px;
+    font-size: 18px;
+    border-bottom: 2px solid #edf2f7;
+    padding-bottom: 6px;
+}
+
+.grid-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 18px;
+}
+
+.card-item {
+    background: white;
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid #e2e8f0;
+    transition: transform 0.2s;
+}
+
+.card-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.btn-edit {
+    background: #ecc94b;
+    color: #744210;
+    border: none;
+    padding: 7px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-delete {
+    background: #e53e3e;
+    color: white;
+    border: none;
+    padding: 7px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* ==========================================
+   TABELA DE MANUTENÇÕES
+   ========================================== */
+.header-tabela {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 25px 0 12px 0;
+}
+
+.input-busca {
+    padding: 8px 12px;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    width: 260px;
+}
+
+.tabela-container {
+    overflow-x: auto;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: #2b6cb0;
+    color: white;
+    padding: 12px;
+    text-align: left;
+    font-size: 14px;
+}
+
+td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #edf2f7;
+    font-size: 13px;
+}
+
+tr:hover {
+    background-color: #f7fafc;
+}
+
+/* ==========================================
+   TELA DE LOGIN
+   ========================================== */
+.login-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #edf2f7;
+}
+
+.login-card {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 380px;
+}
+
+.login-group {
+    margin-bottom: 15px;
+}
+
+.login-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.login-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+}
+
+.mensagem-erro {
+    margin-top: 15px;
+    padding: 10px;
+    background: #fed7d7;
+    color: #9b2c2c;
+    border-radius: 6px;
+    font-size: 13px;
+    text-align: center;
+}
