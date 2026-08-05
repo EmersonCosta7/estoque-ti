@@ -1,3 +1,9 @@
+// VERIFICAÇÃO DE LOGIN (Proteção de rota)
+const usuarioLogado = localStorage.getItem('usuarioLogado');
+if (!usuarioLogado && !window.location.pathname.endsWith('login.html')) {
+    window.location.href = 'login.html';
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // Inicializa os ícones Lucide
     if (window.lucide) {
@@ -376,7 +382,7 @@ window.excluirManutencao = async function(id) {
     });
 };
 
-// BOTÃO SAIR
+// BOTÃO SAIR (LOGOUT CORRIGIDO)
 window.logout = function() {
     Swal.fire({
         title: 'Sair do sistema?',
@@ -389,7 +395,8 @@ window.logout = function() {
         cancelButtonText: 'Permanecer'
     }).then((result) => {
         if (result.isConfirmed) {
-            window.location.reload();
+            localStorage.removeItem('usuarioLogado');
+            window.location.href = 'login.html';
         }
     });
 };
