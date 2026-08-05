@@ -1,202 +1,349 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestão de Ativos TI - Village Cepam</title>
+    <title>Village Cepam — Gestão de TI</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Ícones Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- SweetAlert2 (Popups Elegantes) -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-<body style="background-color: #f7fafc; margin: 0; font-family: system-ui, -apple-system, sans-serif;">
+<body>
+    <!-- Camada de fundo escuro para fechar o menu no celular ao clicar fora -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
-    <!-- Header no Estilo Webmail Original (Fundo escuro fixo + Logo vermelha) -->
-    <header class="header-bar" style="background: #1e2022; padding: 10px 24px; display: flex; justify-content: space-between; align-items: center; color: white;">
-        <div style="display: flex; align-items: center; gap: 15px;">
-            <div class="logo-box" style="background: #c53030; color: white; padding: 4px 12px; border-radius: 4px; font-weight: bold; font-size: 14px; display: flex; align-items: center; gap: 8px;">
-                <span style="font-weight: 900; font-style: italic; font-size: 15px;">Village</span>
-                <span style="border-left: 1px solid rgba(255,255,255,0.4); padding-left: 8px; font-weight: normal; font-size: 13px;">Cepam</span>
-            </div>
-            <h1 style="color: #ffffff; font-size: 15px; margin: 0; font-weight: 600;">Controle de Ativos de TI</h1>
-        </div>
+    <div class="app-container">
         
-        <div style="color: #cbd5e0; font-size: 13px; display: flex; align-items: center; gap: 12px;">
-            <span id="nomeUsuario" style="color: white; font-weight: bold; display: flex; align-items: center; gap: 5px;">👤 Administrator</span>
-            <button onclick="logout()" style="background: #2d3748; border: 1px solid #4a5568; color: white; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">Sair 🚪</button>
-        </div>
-    </header>
-
-    <div class="container" style="max-width: 1240px; margin: 25px auto; padding: 0 20px;">
-
-        <!-- NAVEGAÇÃO ENTRE ABAS -->
-        <div class="menu-navegacao" style="display: flex; gap: 10px; margin-bottom: 20px;">
-            <button id="btn-equipamentos" class="btn-aba active" style="padding: 10px 20px; cursor: pointer; border-radius: 6px; border: 1px solid #cbd5e0; background: #2b6cb0; color: white; font-weight: bold;">📦 Inventário de Equipamentos</button>
-            <button id="btn-manutencao" class="btn-aba" style="padding: 10px 20px; cursor: pointer; border-radius: 6px; border: 1px solid #cbd5e0; background: #edf2f7; color: #2d3748; font-weight: bold;">🛠️ Gestão de Manutenções</button>
-        </div>
-
-        <!-- ======================================================= -->
-        <!-- 🖥️ SEÇÃO 1: EQUIPAMENTOS                                 -->
-        <!-- ======================================================= -->
-        <section id="secao-equipamentos">
-            
-            <!-- Categorias e Filtros (Botão 'Todos' em Vermelho Cepam) -->
-            <div style="display: flex; gap: 8px; margin-bottom: 25px; overflow-x: auto; padding-bottom: 5px;">
-                <button class="categoria-btn active" onclick="filtrarCategoria('Todos', this)" style="background: #e53e3e; color: white; border: none; padding: 8px 18px; border-radius: 20px; font-weight: bold; cursor: pointer;">✨ Todos</button>
-                <button class="categoria-btn" onclick="filtrarCategoria('Monitores', this)" style="background: #ffffff; color: #2d3748; border: 1px solid #cbd5e0; padding: 8px 18px; border-radius: 20px; font-weight: 500; cursor: pointer;">🖥️ Monitores</button>
-                <button class="categoria-btn" onclick="filtrarCategoria('Notebooks', this)" style="background: #ffffff; color: #2d3748; border: 1px solid #cbd5e0; padding: 8px 18px; border-radius: 20px; font-weight: 500; cursor: pointer;">💻 Notebooks</button>
-                <button class="categoria-btn" onclick="filtrarCategoria('Pecas', this)" style="background: #ffffff; color: #2d3748; border: 1px solid #cbd5e0; padding: 8px 18px; border-radius: 20px; font-weight: 500; cursor: pointer;">⚙️ Peças & Componentes</button>
-                <button class="categoria-btn" onclick="filtrarCategoria('Software', this)" style="background: #ffffff; color: #2d3748; border: 1px solid #cbd5e0; padding: 8px 18px; border-radius: 20px; font-weight: 500; cursor: pointer;">💿 Softwares & Licenças</button>
-                <button class="categoria-btn" onclick="filtrarCategoria('Perifericos', this)" style="background: #ffffff; color: #2d3748; border: 1px solid #cbd5e0; padding: 8px 18px; border-radius: 20px; font-weight: 500; cursor: pointer;">⌨️ Periféricos</button>
-                <button class="categoria-btn" onclick="filtrarCategoria('Cabos', this)" style="background: #ffffff; color: #2d3748; border: 1px solid #cbd5e0; padding: 8px 18px; border-radius: 20px; font-weight: 500; cursor: pointer;">🔌 Cabos</button>
-                <button class="categoria-btn" onclick="filtrarCategoria('Redes', this)" style="background: #ffffff; color: #2d3748; border: 1px solid #cbd5e0; padding: 8px 18px; border-radius: 20px; font-weight: 500; cursor: pointer;">🌐 Redes</button>
-            </div>
-
-            <!-- Form de Cadastro -->
-            <section style="margin-bottom: 35px; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border: 1px solid #e2e8f0;">
-                <h3 style="margin-top: 0; color: #1a202c; font-size: 16px; margin-bottom: 15px;">
-                    ➕ Cadastrar Novo Item no Inventário
-                </h3>
-                
-                <form id="formCadastro" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
-                    <input type="text" id="nomeEquipamento" placeholder="Nome do Item (Ex: Monitor Dell 24')" required style="padding: 10px; border: 1px solid #cbd5e0; border-radius: 6px; grid-column: span 2;">
-                    
-                    <input type="text" id="marcaEquipamento" placeholder="Marca (Ex: Dell, HP)" style="padding: 10px; border: 1px solid #cbd5e0; border-radius: 6px;">
-                    <input type="text" id="modeloEquipamento" placeholder="Modelo (Ex: P2419H)" style="padding: 10px; border: 1px solid #cbd5e0; border-radius: 6px;">
-                    <input type="text" id="anoEquipamento" placeholder="Ano (Ex: 2024)" style="padding: 10px; border: 1px solid #cbd5e0; border-radius: 6px;">
-
-                    <select id="categoriaEquipamento" style="padding: 10px; border: 1px solid #cbd5e0; border-radius: 6px;">
-                        <option value="Monitores">🖥️ Monitores</option>
-                        <option value="Notebooks">💻 Notebooks / Desktops</option>
-                        <option value="Pecas">⚙️ Peças & Componentes</option>
-                        <option value="Software">💿 Softwares & Licenças</option>
-                        <option value="Perifericos">⌨️ Periféricos</option>
-                        <option value="Cabos">🔌 Cabos</option>
-                        <option value="Redes">🌐 Redes</option>
-                    </select>
-
-                    <select id="statusEquipamento" style="padding: 10px; border: 1px solid #cbd5e0; border-radius: 6px;">
-                        <option value="Estoque">📦 Em Estoque</option>
-                        <option value="Em Uso">🟢 Em Uso</option>
-                    </select>
-
-                    <button type="submit" class="btn-primary" style="grid-column: span 2; background: #e53e3e; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer;">Salvar no Banco de Dados</button>
-                </form>
-            </section>
-
-            <!-- Seções em Grid por Status (Largura fixa dos cards de 320px para não esticar) -->
-            <section style="margin-bottom: 40px;">
-                <h2 style="color: #2d3748; border-bottom: 2px solid #e53e3e; padding-bottom: 8px; font-size: 18px;">
-                    📦 Em Estoque (Disponíveis)
-                </h2>
-                <div id="container-estoque" class="cards-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 320px)); gap: 20px;"></div>
-            </section>
-
-            <section style="margin-bottom: 40px;">
-                <h2 style="color: #2d3748; border-bottom: 2px solid #38a169; padding-bottom: 8px; font-size: 18px;">
-                    🟢 Em Uso (Alocados)
-                </h2>
-                <div id="container-em-uso" class="cards-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 320px)); gap: 20px;"></div>
-            </section>
-
-            <section style="margin-bottom: 40px;">
-                <h2 style="color: #2d3748; border-bottom: 2px solid #d69e2e; padding-bottom: 8px; font-size: 18px;">
-                    🛠️ Em Manutenção
-                </h2>
-                <div id="container-em-manutencao" class="cards-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 320px)); gap: 20px;"></div>
-            </section>
-
-        </section>
-
-        <!-- ======================================================= -->
-        <!-- 🛠️ SEÇÃO 2: MANUTENÇÃO                                 -->
-        <!-- ======================================================= -->
-        <section id="secao-manutencao" class="hidden">
-            
-            <!-- Formulário de Manutenção -->
-            <section style="margin-bottom: 35px; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border: 1px solid #e2e8f0;">
-                <h3 style="margin-top: 0; color: #1a202c; font-size: 16px; margin-bottom: 15px;">
-                    🛠️ Registrar Nova Manutenção
-                </h3>
-                
-                <form id="form-manutencao" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px;">
-                    
-                    <div style="grid-column: 1 / -1; display: flex; flex-direction: column; gap: 5px;">
-                        <label for="manutencao-equipamento" style="font-weight: bold; font-size: 13px; color: #4a5568;">Equipamento:</label>
-                        <select id="manutencao-equipamento" required style="padding: 10px; border: 1px solid #cbd5e0; border-radius: 6px; width: 100%;">
-                            <option value="">Carregando equipamentos...</option>
-                        </select>
-                    </div>
-
-                    <div style="grid-column: 1 / -1; display: flex; flex-direction: column; gap: 5px;">
-                        <label for="manutencao-descricao" style="font-weight: bold; font-size: 13px; color: #4a5568;">Descrição do Serviço:</label>
-                        <textarea id="manutencao-descricao" rows="3" placeholder="Descreva o problema ou manutenção realizada..." required style="padding: 10px; border: 1px solid #cbd5e0; border-radius: 6px; width: 100%; font-family: inherit;"></textarea>
-                    </div>
-
-                    <div style="display: flex; flex-direction: column; gap: 5px;">
-                        <label for="manutencao-tecnico" style="font-weight: bold; font-size: 13px; color: #4a5568;">Técnico Responsável:</label>
-                        <input type="text" id="manutencao-tecnico" placeholder="Nome do técnico" required style="padding: 10px; border: 1px solid #cbd5e0; border-radius: 6px;">
-                    </div>
-
-                    <div style="display: flex; flex-direction: column; gap: 5px;">
-                        <label for="manutencao-setor" style="font-weight: bold; font-size: 13px; color: #4a5568;">Setor Atendido:</label>
-                        <input type="text" id="manutencao-setor" placeholder="Ex: RH, Financeiro" required style="padding: 10px; border: 1px solid #cbd5e0; border-radius: 6px;">
-                    </div>
-
-                    <div style="display: flex; flex-direction: column; gap: 5px;">
-                        <label for="manutencao-funcionario" style="font-weight: bold; font-size: 13px; color: #4a5568;">Funcionário Atendido:</label>
-                        <input type="text" id="manutencao-funcionario" placeholder="Nome do colaborador" required style="padding: 10px; border: 1px solid #cbd5e0; border-radius: 6px;">
-                    </div>
-
-                    <div style="display: flex; flex-direction: column; gap: 5px;">
-                        <label for="manutencao-data" style="font-weight: bold; font-size: 13px; color: #4a5568;">Data:</label>
-                        <input type="date" id="manutencao-data" required style="padding: 10px; border: 1px solid #cbd5e0; border-radius: 6px;">
-                    </div>
-
-                    <div style="display: flex; flex-direction: column; gap: 5px;">
-                        <label for="manutencao-hora" style="font-weight: bold; font-size: 13px; color: #4a5568;">Hora:</label>
-                        <input type="time" id="manutencao-hora" required style="padding: 10px; border: 1px solid #cbd5e0; border-radius: 6px;">
-                    </div>
-
-                    <button type="submit" class="btn-primary" style="grid-column: 1 / -1; background: #e53e3e; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 5px;">Salvar Registro de Manutenção</button>
-                </form>
-            </section>
-
-            <!-- BARRA DE FILTRO E BOTÃO DE IMPRESSÃO -->
-            <div style="display: flex; gap: 10px; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap;">
-                <input type="text" id="filtro-manutencao" placeholder="🔍 Filtrar por setor, equipamento, técnico..." style="padding: 10px; border: 1px solid #cbd5e0; border-radius: 6px; flex: 1; min-width: 200px;">
-                
-                <button onclick="window.print()" style="background: #4a5568; color: white; border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 6px;">
-                    🖨️ Imprimir / PDF
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <div class="brand-header">
+                <div class="brand-logo-container">
+                    <img src="logo.png.jfif" alt="Cepam" class="brand-logo-img" onerror="this.onerror=null; this.src='https://www.cepam.com.br/assets/images/logo.png';">
+                </div>
+                <div class="brand-text">
+                    <h2>Village Cepam</h2>
+                    <span>GESTÃO DE TI • DESDE 1968</span>
+                </div>
+                <!-- Botão para fechar o menu no celular -->
+                <button class="btn-close-sidebar no-desktop" onclick="toggleSidebar()">
+                    <i data-lucide="x"></i>
                 </button>
             </div>
 
-            <!-- Tabela / Histórico de Manutenções -->
-            <section style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border: 1px solid #e2e8f0;">
-                <h3 style="margin-top: 0; color: #1a202c; font-size: 16px; margin-bottom: 15px;">
-                    📋 Histórico Geral de Manutenções
-                </h3>
+            <nav class="sidebar-nav">
+                <button class="nav-item active" data-tab="tab-dashboard">
+                    <i data-lucide="layout-dashboard"></i>
+                    <div>
+                        <strong>Dashboard</strong>
+                        <small>Métricas rápidas</small>
+                    </div>
+                </button>
 
-                <div style="overflow-x: auto;">
-                    <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;">
-                        <thead>
-                            <tr style="background: #2b6cb0; color: white;">
-                                <th style="padding: 12px 10px;">Data/Hora</th>
-                                <th style="padding: 12px 10px;">Equipamento</th>
-                                <th style="padding: 12px 10px;">Descrição</th>
-                                <th style="padding: 12px 10px;">Técnico</th>
-                                <th style="padding: 12px 10px;">Setor</th>
-                                <th style="padding: 12px 10px;">Funcionário</th>
-                                <th style="padding: 12px 10px; text-align: center;">Ações</th>
-                            </tr>
-                        </thead>
-                        
-                        <tbody id="lista-manutencoes">
-                            <!-- Preenchido via JavaScript -->
-                        </tbody>
-                    </table>
+                <button class="nav-item" data-tab="tab-em-uso">
+                    <i data-lucide="laptop"></i>
+                    <div>
+                        <strong>Equipamentos em Uso</strong>
+                        <small>Ativos alocados</small>
+                    </div>
+                </button>
+
+                <button class="nav-item" data-tab="tab-reserva">
+                    <i data-lucide="package"></i>
+                    <div>
+                        <strong>Reserva Técnica</strong>
+                        <small>Estoque de backup</small>
+                    </div>
+                </button>
+
+                <button class="nav-item" data-tab="tab-manutencao">
+                    <i data-lucide="wrench"></i>
+                    <div>
+                        <strong>Manutenção</strong>
+                        <small>Interna e terceiros</small>
+                    </div>
+                </button>
+
+                <button class="nav-item" data-tab="tab-relatorios">
+                    <i data-lucide="file-text"></i>
+                    <div>
+                        <strong>Relatórios & Termos</strong>
+                        <small>Documentos</small>
+                    </div>
+                </button>
+
+                <button class="nav-item" data-tab="tab-configuracoes">
+                    <i data-lucide="settings"></i>
+                    <div>
+                        <strong>Configurações</strong>
+                        <small>Categorias e setores</small>
+                    </div>
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="cepam-badge-footer">
+                    <span class="dot-online"></span>
+                    <span>Panificadora Cepam / Village</span>
                 </div>
-            </section>
+                <button class="btn-logout" onclick="logout()"><i data-lucide="log-out"></i> Sair do sistema</button>
+            </div>
+        </aside>
 
-        </section>
+        <!-- CONTEÚDO PRINCIPAL -->
+        <main class="main-content">
+            
+            <header class="top-header">
+                <div class="header-left">
+                    <!-- Botão Hamburger no Celular -->
+                    <button class="btn-menu-toggle" onclick="toggleSidebar()">
+                        <i data-lucide="menu"></i>
+                    </button>
+                    <div class="header-brand-title">
+                        <span class="red-oval-badge">CEPAM</span>
+                        <h1>Village Cepam — Gestão de TI</h1>
+                    </div>
+                </div>
 
+                <div class="header-right">
+                    <span class="user-badge" id="nomeUsuario">👤 Usuário</span>
+                    <span class="badge-dept">Departamento de Tecnologia</span>
+                </div>
+            </header>
+
+            <div class="content-body">
+
+                <!-- TAB 1: DASHBOARD -->
+                <section id="tab-dashboard" class="tab-pane active">
+                    <div class="hero-banner">
+                        <span class="banner-sub">PANIFICADORA CEPAM • VILLAGE PANETTONES</span>
+                        <h2>Painel de Gestão de Ativos de TI</h2>
+                        <p id="resumo-geral-banner">Controle unificado do parque tecnológico Cepam.</p>
+                    </div>
+
+                    <div class="cards-grid">
+                        <div class="metric-card">
+                            <div class="metric-icon icon-blue"><i data-lucide="laptop"></i></div>
+                            <div class="metric-info">
+                                <h3 id="dash-qtd-uso">0</h3>
+                                <span>Equipamentos em uso</span>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon icon-green"><i data-lucide="package"></i></div>
+                            <div class="metric-info">
+                                <h3 id="dash-qtd-reserva">0</h3>
+                                <span>Reserva técnica</span>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon icon-orange"><i data-lucide="wrench"></i></div>
+                            <div class="metric-info">
+                                <h3 id="dash-qtd-manut-interna">0</h3>
+                                <span>Manutenções ativas</span>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon icon-red"><i data-lucide="shield-check"></i></div>
+                            <div class="metric-info">
+                                <h3 id="dash-total-geral">0</h3>
+                                <span>Total no Inventário</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="two-columns" style="margin-top: 24px;">
+                        <div class="panel-box">
+                            <h3>Cadastrar Novo Ativo</h3>
+                            <form id="formCadastroDash">
+                                <div class="form-group">
+                                    <label>Nome / Equipamento</label>
+                                    <input type="text" id="dash-nome" placeholder="Ex: Notebook Dell Vostro" required>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Marca</label>
+                                        <input type="text" id="dash-marca" placeholder="Ex: Dell">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Modelo</label>
+                                        <input type="text" id="dash-modelo" placeholder="Ex: Vostro 15">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Categoria</label>
+                                        <select id="dash-categoria" required>
+                                            <option value="Notebooks">Notebooks</option>
+                                            <option value="Desktops">Desktops</option>
+                                            <option value="Monitores">Monitores</option>
+                                            <option value="Periféricos">Periféricos</option>
+                                            <option value="Pecas">Peças / Componentes</option>
+                                            <option value="Redes">Redes / Switches</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Status Inicial</label>
+                                        <select id="dash-status" required>
+                                            <option value="Estoque">Reserva Técnica (Estoque)</option>
+                                            <option value="Em Uso">Em Uso</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px;">💾 Salvar Equipamento</button>
+                            </form>
+                        </div>
+
+                        <div class="panel-box">
+                            <h3>Informações do Sistema</h3>
+                            <p style="font-size: 13px; color: #64748B; line-height: 1.6;">
+                                Utilize este painel para manter o controle total dos computadores, impressoras, periféricos e peças em estoque da Panificadora Cepam / Village Panettones.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 2: EQUIPAMENTOS EM USO -->
+                <section id="tab-em-uso" class="tab-pane">
+                    <div class="page-title-bar">
+                        <h2>Equipamentos em Uso</h2>
+                        <p class="subtitle">Ativos alocados nos setores da empresa.</p>
+                    </div>
+
+                    <div class="filter-bar">
+                        <input type="text" id="busca-em-uso" placeholder="🔍 Buscar por nome..." oninput="filtrarEmUso()">
+                    </div>
+
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Equipamento</th>
+                                    <th>Marca / Modelo</th>
+                                    <th>Categoria</th>
+                                    <th>Status</th>
+                                    <th style="text-align: right;" class="no-print">Ação</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody-em-uso"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- TAB 3: RESERVA TÉCNICA -->
+                <section id="tab-reserva" class="tab-pane">
+                    <div class="page-title-bar">
+                        <h2>Reserva Técnica / Backup</h2>
+                        <p class="subtitle">Item(ns) disponíveis no estoque de TI.</p>
+                    </div>
+
+                    <div class="cards-inventory-grid" id="grid-reserva"></div>
+                </section>
+
+                <!-- TAB 4: MANUTENÇÃO -->
+                <section id="tab-manutencao" class="tab-pane">
+                    <div class="page-title-bar-with-action">
+                        <div>
+                            <h2>Gestão de Manutenções</h2>
+                            <p class="subtitle">Registro de defeitos e reparos técnicos.</p>
+                        </div>
+                        <button class="btn-print" onclick="window.print()">🖨️ Imprimir O.S.</button>
+                    </div>
+
+                    <div class="panel-box no-print" style="margin-bottom: 20px;">
+                        <h3>Nova Ordem de Manutenção</h3>
+                        <form id="form-manutencao">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Equipamento</label>
+                                    <select id="manutencao-equipamento" required></select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Técnico Responsável</label>
+                                    <input type="text" id="manutencao-tecnico" placeholder="Ex: Emerson" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Setor</label>
+                                    <input type="text" id="manutencao-setor" placeholder="Ex: Expedição / Loja" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Funcionário Solicitante</label>
+                                    <input type="text" id="manutencao-funcionario" placeholder="Ex: Carlos" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Data</label>
+                                    <input type="date" id="manutencao-data" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Hora</label>
+                                    <input type="time" id="manutencao-hora" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Descrição do Defeito / Serviço</label>
+                                <input type="text" id="manutencao-descricao" placeholder="Ex: Troca de memória RAM" required>
+                            </div>
+
+                            <button type="submit" class="btn-primary">🔧 Registrar Manutenção</button>
+                        </form>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Data / Hora</th>
+                                    <th>Equipamento</th>
+                                    <th>Descrição do Defeito</th>
+                                    <th>Técnico</th>
+                                    <th>Setor</th>
+                                    <th>Solicitante</th>
+                                    <th style="text-align: center;" class="no-print">Ação</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lista-manutencoes"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- TAB 5: RELATÓRIOS -->
+                <section id="tab-relatorios" class="tab-pane">
+                    <div class="page-title-bar-with-action">
+                        <div>
+                            <h2>Relatórios & Termos</h2>
+                            <p class="subtitle">Resumo geral para acompanhamento.</p>
+                        </div>
+                        <button class="btn-print" onclick="window.print()">🖨️ Imprimir Relatório</button>
+                    </div>
+
+                    <div class="panel-box" style="margin-top: 20px;">
+                        <p id="relatorio-resumo-texto">Carregando métricas...</p>
+                    </div>
+                </section>
+
+                <!-- TAB 6: CONFIGURAÇÕES -->
+                <section id="tab-configuracoes" class="tab-pane">
+                    <h2>Configurações</h2>
+                    <div class="panel-box" style="margin-top: 20px;">
+                        <p><strong>Unidade:</strong> Panificadora Cepam / Village Panettones</p>
+                        <p style="margin-top: 8px;"><strong>Banco de Dados:</strong> MySQL (Conectado via Node.js)</p>
+                    </div>
+                </section>
+
+            </div>
+        </main>
     </div>
 
     <script src="script.js"></script>
